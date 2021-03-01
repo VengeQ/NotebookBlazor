@@ -1,20 +1,52 @@
 ﻿@page "/"
 @using Notebook.Components
 @using Notebook.Data
+@inject WeatherForecastService  ws
+@inject CounterService cs
 <div class="container">
     <h1>Hello, world!</h1>
-
-    Welcome to your new app.
+    <div class="row">
+        <div class="col">
+            <p>@summary</p>
+        </div>
+        <div class="col">
+            <button class="alert" @onclick="NextWeather"></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>@cs.Count</p>
+        </div>
+        <div class="col">
+            <button @onclick="Increment"></button>
+        </div>
+    </div>
     @foreach (Record record in rs.GetRecordsAsync().Result)
     {
         <CaseRecord Record="@record" OnDelete="() => DeleteRecord(record.Id)"></CaseRecord>
     }
 </div>
+
 @code{
     private RecordService rs = new RecordService();
+
+    private WeatherForecast wfElement { set; get; }
+
+    private String summary => wfElement == null ? "Empty" : wfElement.Summary;
 
     public async void DeleteRecord(uint id)
     {
         await rs.DeleteTaskAsync(id);
     }
+
+    public async Task NextWeather()
+    {
+        await Task.Run(() => wfElement = ws.GetForecastAsync(DateTime.Now).Result.First());
+    }
+    public async void Increment()
+    {
+        await cs.Increment();
+        await InvokeAsync(StateHasChanged);
+    }
+
 }
