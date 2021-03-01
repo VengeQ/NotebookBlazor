@@ -1,0 +1,20 @@
+﻿@page "/"
+@using Notebook.Components
+@using Notebook.Data
+<div class="container">
+    <h1>Hello, world!</h1>
+
+    Welcome to your new app.
+    @foreach (Record record in rs.GetRecordsAsync().Result)
+    {
+        <CaseRecord Record="@record" OnDelete="() => DeleteRecord(record.Id)"></CaseRecord>
+    }
+</div>
+@code{
+    private RecordService rs = new RecordService();
+
+    public async void DeleteRecord(uint id)
+    {
+        await rs.DeleteTaskAsync(id);
+    }
+}

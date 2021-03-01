@@ -1,0 +1,21 @@
+﻿@using Notebook.Data
+
+<div class="row">
+    <p class="col-6">@Record.Description</p>
+    <p class="col-6"><button @onclick="() => DeleteRecord(Record.Id)"></button></p>
+</div>
+<p></p>
+
+@code {
+    [Parameter]
+    public Record Record { get; set; } = new Record(1, "1");
+
+    [Parameter]
+    public EventCallback<Record> OnDelete { get; set; }
+
+    private async Task DeleteRecord(uint id)
+    {
+        await OnDelete.InvokeAsync(Record);
+    }
+
+}
