@@ -30,6 +30,8 @@ namespace Notebook
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<CounterService>();
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddTransient(provider => new SimpleRepository(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
