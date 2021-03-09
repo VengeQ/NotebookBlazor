@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using Notebook.Components
 @using Notebook.Data
+@using Notebook.Shared
 @inject WeatherForecastService  ws
 @inject CounterService cs
 @inject SimpleRepository sr
@@ -30,6 +31,8 @@
             <button @onclick="ToDb"></button>
         </div>
     </div>
+    <div class="row">
+    </div>
     @foreach (Record record in rs.GetRecordsAsync().Result)
     {
         <CaseRecord Record="@record" OnDelete="() => DeleteRecord(record.Id)"></CaseRecord>
@@ -43,7 +46,7 @@
 
     private String summary => wfElement == null ? "Empty" : wfElement.Summary;
 
-    private int counterFromDb = 1;
+    private String counterFromDb = "";
 
     public async void DeleteRecord(uint id)
     {
@@ -62,7 +65,9 @@
 
     public async void ToDb()
     {
-        counterFromDb = await sr.DoSomething();
+        var recordFromDB = await sr.DoSomething();
+        counterFromDb = recordFromDB.Description;
+        await InvokeAsync(StateHasChanged);
     }
 
 }

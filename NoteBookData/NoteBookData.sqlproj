@@ -58,10 +58,17 @@
     <Folder Include="Properties" />
     <Folder Include="Tables" />
     <Folder Include="Schemas" />
+    <Folder Include="Functions" />
+    <Folder Include="Procedures" />
+    <Folder Include="Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\nb.TestTable.sql" />
     <Build Include="Schemas\nb.sql" />
+    <Build Include="Tables\nb.Records.sql" />
+    <Build Include="Procedures\nb.RecordAdd.sql" />
+    <Build Include="Functions\nb.GetRecords.sql" />
+    <Build Include="Views\nb.RecordsView.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NoteBookData.publish.xml" />

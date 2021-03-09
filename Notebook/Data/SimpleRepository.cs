@@ -17,10 +17,18 @@ namespace Notebook.Data
             this.connection = connection;
         }
 
-        public async Task<int> DoSomething()
+        public async Task<RecordFromDB> DoSomething()
         {
             using IDbConnection db = new SqlConnection(connection);
-            return await db.QueryFirstAsync<int>("SELECT COUNT(1) FROM nb.TestTable");
+            return await db.QueryFirstAsync<RecordFromDB>("SELECT * FROM nb.GetRecords(0)");
+        }
+
+        public class RecordFromDB
+        {
+            public int Id { get; set; }
+            public String Description { get; set; }
+            public bool IsCompleted { get; set; }
+            public DateTime CompleteDate { get; set; }
         }
     }
 }
