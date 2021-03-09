@@ -72,5 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="NoteBookData.publish.xml" />
+    <None Include="NoteBookData_1.publish.xml" />
   </ItemGroup>
 </Project>
