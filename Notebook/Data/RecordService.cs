@@ -1,37 +1,29 @@
-﻿using System;
+﻿using Notebook.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Notebook.Entities;
+using System.Data;
+using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Dapper;
 
 namespace Notebook.Data
 {
     public class RecordService
     {
-        private List<Record> records;
-
-        public RecordService()
+        private Db _db;
+        public RecordService(Db db)
         {
-            records = new List<Record>
-            {
-                new Record(1, "First"),
-                new Record(2, "Second"),
-                new Record(3, "Third")
-            };
+            _db = db;
         }
-
-        public Task<IEnumerable<Record>> GetRecordsAsync()
+        public async Task<IEnumerable<Record>> GetRecords()
         {
-            return Task.FromResult(records.AsEnumerable());
+            using IDbConnection db = new SqlConnection("Data Source=DESKTOP-PQSPCPJ\\SQLEXPRESS;Initial Catalog=Notebook;Trusted_Connection=true;MultipleActiveResultSets=True;Integrated Security=True");
+            var result = _db.SelectData<Record>("SELECT records.Id FROM nb.Records AS records");
+            var t = await db.QueryAsync<Record>("SELECT * FROM nb.GetRecords(0)");
+            return t;
         }
-
-        public Task DeleteTaskAsync(uint filter)
-        {
-            return Task.Run(() => 
-                records = records
-                    .Where(record => record.Id != filter)
-                    .ToList()
-            );
-        }
-
     }
 }

@@ -5,11 +5,14 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Notebook.Core;
 using Notebook.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Notebook.Data.BookApp.Data;
 
 namespace Notebook
 {
@@ -28,10 +31,13 @@ namespace Notebook
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<CounterService>();
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddTransient(provider => new SimpleRepository(connectionString));
+            services.AddDbContext<AplicationContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<Db>();
+            services.AddTransient<RecordService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

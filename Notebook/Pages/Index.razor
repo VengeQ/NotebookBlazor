@@ -2,72 +2,44 @@
 @using Notebook.Components
 @using Notebook.Data
 @using Notebook.Shared
-@inject WeatherForecastService  ws
-@inject CounterService cs
-@inject SimpleRepository sr
+@inject RecordService recordService
 <div class="container">
     <h1>Hello, world!</h1>
-    <div class="row">
-        <div class="col">
-            <p>@summary</p>
-        </div>
-        <div class="col">
-            <button class="alert" @onclick="NextWeather"></button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <p>@cs.Count</p>
-        </div>
-        <div class="col">
-            <button @onclick="Increment"></button>
-        </div>
-    </div>
     <div class="row">
         <div class="col">
             @counterFromDb
         </div>
         <div class="col">
-            <button @onclick="ToDb"></button>
+            <button class="alert" value="123" @onclick="ToDb"></button>
         </div>
     </div>
     <div class="row">
+        <p>@FirstRecord.Id</p>
+        <p>@FirstRecord.Description</p>
+        <p>@FirstRecord.CompleteDate</p>
+        <p>@FirstRecord.IsComplete</p>
     </div>
-    @foreach (Record record in rs.GetRecordsAsync().Result)
-    {
-        <CaseRecord Record="@record" OnDelete="() => DeleteRecord(record.Id)"></CaseRecord>
-    }
 </div>
 
 @code{
-    private RecordService rs = new RecordService();
-
-    private WeatherForecast wfElement { set; get; }
-
-    private String summary => wfElement == null ? "Empty" : wfElement.Summary;
 
     private String counterFromDb = "";
 
-    public async void DeleteRecord(uint id)
+    [Parameter]
+    public Record FirstRecord { get; set; } = new Record(12);
+
+
+    protected override async Task OnInitializedAsync()
     {
-        await rs.DeleteTaskAsync(id);
+        var collection = await recordService.GetRecords();
+        FirstRecord = await Task.FromResult(collection.First());
     }
 
-    public async Task NextWeather()
+    public void ToDb()
     {
-        await Task.Run(() => wfElement = ws.GetForecastAsync(DateTime.Now).Result.First());
-    }
-    public async void Increment()
-    {
-        await cs.Increment();
-        await InvokeAsync(StateHasChanged);
-    }
-
-    public async void ToDb()
-    {
-        var recordFromDB = await sr.DoSomething();
-        counterFromDb = recordFromDB.Description;
-        await InvokeAsync(StateHasChanged);
+        var recordFromDB = recordService.GetRecords();
+        //FirstRecord = recordService.GetRecords().First();
+        InvokeAsync(StateHasChanged);
     }
 
 }
