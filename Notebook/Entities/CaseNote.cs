@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Notebook.Entities
 {
-    public class Record
+    public class CaseNote
     {
-        public Record()
+        public CaseNote()
         {
 
         }
 
-        public Record(int id)
+        public CaseNote(int id)
         {
             Id = id;
         }

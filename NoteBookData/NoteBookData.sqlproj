@@ -63,12 +63,11 @@
     <Folder Include="Views" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\nb.TestTable.sql" />
     <Build Include="Schemas\nb.sql" />
-    <Build Include="Tables\nb.Records.sql" />
-    <Build Include="Procedures\nb.RecordAdd.sql" />
-    <Build Include="Functions\nb.GetRecords.sql" />
-    <Build Include="Views\nb.RecordsView.sql" />
+    <Build Include="Tables\nb.CaseNotes.sql" />
+    <Build Include="Procedures\nb.CaseNoteAdd.sql" />
+    <Build Include="Functions\nb.GetCaseNotes.sql" />
+    <Build Include="Views\nb.CaseNotesView.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NoteBookData.publish.xml" />

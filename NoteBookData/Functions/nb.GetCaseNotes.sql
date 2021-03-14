@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION nb.GetRecords
+﻿CREATE FUNCTION nb.GetCaseNotes
 (
 	@JustUncompleted bit = 1
 )
@@ -10,6 +10,6 @@ RETURN(
 		r.Description,
 		r.IsComplete,
 		r.CompleteDate
-		FROM nb.RecordsView AS r
+		FROM nb.CaseNotesView AS r
 		WHERE IIF(r.CompleteDate IS NULL, 0 , 1) = @JustUncompleted
 )

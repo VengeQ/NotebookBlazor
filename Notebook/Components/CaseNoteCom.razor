@@ -8,10 +8,10 @@
 
 @code {
     [Parameter]
-    public Record Record { get; set; }
+    public CaseNote Record { get; set; }
 
     [Parameter]
-    public EventCallback<Record> OnDelete { get; set; }
+    public EventCallback<CaseNote> OnDelete { get; set; }
 
     private async Task DeleteRecord(int id)
     {
