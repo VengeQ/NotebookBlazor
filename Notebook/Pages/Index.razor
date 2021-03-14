@@ -2,42 +2,42 @@
 @using Notebook.Components
 @using Notebook.Data
 @using Notebook.Shared
-@inject CaseNoteService caseNoteService
 <div class="container">
-    <h1>Hello, world!</h1>
-    <div class="row">
-        <div class="col">
-            @counterFromDb
+    @if (CaseNotes != null)
+    {
+        foreach (var caseNote in CaseNotes)
+        {
+            <div class="row">
+                <CaseNoteCom CaseNote="caseNote" OnCaseNoteComplete ="CaseNoteComplete"></CaseNoteCom>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row">
+            Ничего не найдено
         </div>
-        <div class="col">
-            <button class="alert" value="123" @onclick="ToDb"></button>
-        </div>
-    </div>
-    <div class="row">
-        <p>@FirstRecord.Id</p>
-        <p>@FirstRecord.Description</p>
-        <p>@FirstRecord.CompleteDate</p>
-        <p>@FirstRecord.IsComplete</p>
-    </div>
+    }
 </div>
 
 @code{
 
-    private String counterFromDb = "";
-
     [Parameter]
-    public CaseNote FirstRecord { get; set; } = new CaseNote(12);
+    public IEnumerable<CaseNote> CaseNotes { get; set; }
+
+    [Inject]
+    public CaseNoteService CaseNoteService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var collection = await caseNoteService.GetCaseNotes();
-        FirstRecord = await Task.FromResult(collection.First());
+        CaseNotes = await CaseNoteService.GetCaseNotes();
     }
 
-    public void ToDb()
+    protected void CaseNoteComplete(CaseNote cs)
     {
-        var recordFromDB = caseNoteService.GetCaseNotes();
-        InvokeAsync(StateHasChanged);
+        CaseNoteService.MakeComplete(cs.Id);
+        CaseNotes = CaseNoteService.GetCaseNotes().Result;
+        StateHasChanged();
     }
 
 }

@@ -21,5 +21,14 @@ namespace Notebook.Data.Providers
         {
             return _db.SelectData<CaseNote>("SELECT * FROM nb.CaseNotesView");
         }
+
+        public void MakeComplete(int id)
+        {
+            var arguments = new Dictionary<String, String>
+            {
+                { "@Id", id.ToString() }
+            };
+            _db.ExecuteProcedure("nb.MakeCaseNoteComplete", arguments);
+        }
     }
 }

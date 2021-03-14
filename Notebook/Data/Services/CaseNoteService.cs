@@ -23,5 +23,10 @@ namespace Notebook.Data
         {
             return _provider.GetCaseNotes();
         }
+
+        public void MakeComplete(int id)
+        {
+            _provider.MakeComplete(id);
+        }
     }
 }
