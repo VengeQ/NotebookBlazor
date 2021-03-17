@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Notebook.Components
+
 @using Notebook.Data
 @using Notebook.Shared
 <div class="container">
@@ -18,6 +19,7 @@
             Ничего не найдено
         </div>
     }
+    <DropDownBase OnValueChanged="ListClicked"></DropDownBase>
 </div>
 
 @code{
@@ -38,6 +40,11 @@
         CaseNoteService.MakeComplete(cs.Id);
         CaseNotes = CaseNoteService.GetCaseNotes().Result;
         StateHasChanged();
+    }
+
+    protected void ListClicked()
+    {
+        Console.WriteLine("!");
     }
 
 }

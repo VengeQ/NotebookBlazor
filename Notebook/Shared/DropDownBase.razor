@@ -1,0 +1,57 @@
+﻿<h3>DropDownBase</h3>
+
+@if (DropDownValues.Any())
+{
+    <div class="row" style="padding-top:10px">
+        <div class="col-md-4">
+            <select class="form-control" @onchange="ListClicked">
+                @*<option value="0">-- Select Value --</option>*@
+                @foreach (var entity in DropDownValues)
+                {
+                    <option value="@entity.Key">
+                        @entity.Value
+                    </option>
+                }
+            </select>
+        </div>
+        <button @onclick="() => ButtonClick()"></button>
+        <p>@DDKey</p>
+    </div>
+}
+@code {
+    [Parameter]
+    public IDictionary<int, String> DropDownValues { get; set; }
+
+    private String DDValue;
+    private int DDKey;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() =>
+        {
+            DropDownValues = new Dictionary<int, string>();
+            DropDownValues.Add(0, "-- Select Value --");
+            DropDownValues.Add(1, "First");
+            DropDownValues.Add(2, "Second");
+        });
+    }
+
+    [Parameter]
+    public EventCallback<(int, String)> OnValueChanged { get; set; }
+    public EventCallback<(int, String)> OnButtonClick { get; set; }
+
+
+    private Task ListClicked(ChangeEventArgs e)
+    {
+        DDKey = Int32.Parse(e.Value.ToString());
+        DropDownValues.TryGetValue(DDKey, out DDValue);
+
+        return OnValueChanged.InvokeAsync((DDKey, DDValue));
+    }
+
+    private Task ButtonClick()
+    {
+        StateHasChanged();
+        return OnButtonClick.InvokeAsync((DDKey, DDValue));
+    }
+}
