@@ -1,0 +1,40 @@
+﻿@page "/develop/components"
+@using Notebook.Components
+@using Notebook.Shared.Components
+@using Notebook.Data
+@using Notebook.Shared
+
+<div class="row text-md-center">
+    <h3>Components</h3>
+    <h4>DropDownBase</h4>
+</div>
+<DropDownBase OnValueChanged="ListClicked"></DropDownBase>
+<div class="row">
+    <div class="col">
+        Значение ключа: @key
+    </div>
+</div>
+
+@code {
+    //[Parameter]
+    //public IDictionary<int, String> DropDownValues { get; set; }
+
+    private int? key;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    await Task.Run(() =>
+    //    {
+    //        DropDownValues = new Dictionary<int, String>();
+    //        DropDownValues.Add(0, "-- Select Value --");
+    //        DropDownValues.Add(1, "First");
+    //        DropDownValues.Add(2, "Second");
+    //    });
+    //}
+
+
+    protected void ListClicked()
+    {
+        //key = value.Item1;
+    }
+}

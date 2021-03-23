@@ -1,9 +1,9 @@
 ﻿@page "/"
 @using Notebook.Components
-
+@using Notebook.Shared.Components
 @using Notebook.Data
 @using Notebook.Shared
-<div class="container">
+<div>
     @if (CaseNotes != null)
     {
         foreach (var caseNote in CaseNotes)
@@ -19,7 +19,6 @@
             Ничего не найдено
         </div>
     }
-    <DropDownBase OnValueChanged="ListClicked"></DropDownBase>
 </div>
 
 @code{
@@ -40,11 +39,6 @@
         CaseNoteService.MakeComplete(cs.Id);
         CaseNotes = CaseNoteService.GetCaseNotes().Result;
         StateHasChanged();
-    }
-
-    protected void ListClicked()
-    {
-        Console.WriteLine("!");
     }
 
 }
