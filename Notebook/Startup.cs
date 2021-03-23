@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Notebook.Data.BookApp.Data;
 using Notebook.Data.Providers;
+using Notebook.Examples;
 
 namespace Notebook
 {
@@ -39,6 +40,7 @@ namespace Notebook
             services.AddScoped<Db>();
             services.AddScoped<CaseNoteService>();
             services.AddScoped<CaseNoteProvider>();
+            services.AddScoped<ExampleService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

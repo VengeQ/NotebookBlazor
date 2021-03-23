@@ -1,14 +1,15 @@
 ﻿@page "/develop/components"
-@using Notebook.Components
 @using Notebook.Shared.Components
-@using Notebook.Data
-@using Notebook.Shared
+@using Notebook.Examples
+
 
 <div class="row text-md-center">
-    <h3>Components</h3>
-    <h4>DropDownBase</h4>
+    <div class="col justify-content-center"><h3>Components</h3></div>
 </div>
-<DropDownBase OnValueChanged="ListClicked"></DropDownBase>
+<div class="row text-md-center">
+    <div class="col justify-content-center"><h4>DropDownBase</h4></div>
+</div>
+<DropDownBase OnValueChanged="SelectKey" Placeholder=@PlaceHolder @bind-DropDownValues="DropDownValues"></DropDownBase>
 <div class="row">
     <div class="col">
         Значение ключа: @key
@@ -16,25 +17,22 @@
 </div>
 
 @code {
-    //[Parameter]
-    //public IDictionary<int, String> DropDownValues { get; set; }
+    [Inject]
+    private ExampleService ExampleService { get; set; }
+
+    [Parameter]
+    public IDictionary<int, String> DropDownValues { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DropDownValues = await ExampleService.InitExampleDictionary();
+    }
 
     private int? key;
+    private String PlaceHolder = "---Выберите---";
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    await Task.Run(() =>
-    //    {
-    //        DropDownValues = new Dictionary<int, String>();
-    //        DropDownValues.Add(0, "-- Select Value --");
-    //        DropDownValues.Add(1, "First");
-    //        DropDownValues.Add(2, "Second");
-    //    });
-    //}
-
-
-    protected void ListClicked()
+    protected void SelectKey((int, String) result)
     {
-        //key = value.Item1;
+        key = result.Item1;
     }
 }

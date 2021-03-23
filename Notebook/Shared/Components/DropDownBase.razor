@@ -1,9 +1,9 @@
-﻿@if (DropDownValues.Any())
+﻿@if (DropDownValues != null )
 {
     <div class="row" style="padding-top:10px">
         <div class="col-md-4">
-            <select class="form-control" @onchange="ListClicked">
-                @*<option value="0">-- Select Value --</option>*@
+            <select class="form-control" @onchange="SelectElement">
+                <option value="0">@PlaceHolder</option>
                 @foreach (var entity in DropDownValues)
                 {
                     <option value="@entity.Key">
@@ -18,26 +18,21 @@
 @code {
     [Parameter]
     public IDictionary<int, String> DropDownValues { get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-        await Task.Run(() =>
-        {
-            DropDownValues = new Dictionary<int, String>();
-            DropDownValues.Add(0, "-- Select Value --");
-            DropDownValues.Add(1, "First");
-            DropDownValues.Add(2, "Second");
-        });
-    }
+    [Parameter]
+    public String PlaceHolder { get; set; }
+
+
 
     [Parameter]
     public EventCallback<(int, String)> OnValueChanged { get; set; }
-    //[Parameter]
-    //public EventCallback<IDictionary<int, String>> DropDownValuesChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<IDictionary<int, String>> DropDownValuesChanged { get; set; }
 
     private String DDValue;
     private int DDKey;
 
-    public Task ListClicked(ChangeEventArgs e)
+    public Task SelectElement(ChangeEventArgs e)
     {
         DDKey = Int32.Parse(e.Value.ToString());
         DropDownValues.TryGetValue(DDKey, out DDValue);

@@ -1,13 +1,17 @@
 ﻿@using Notebook.Data
 
 <div class="col-8">@CaseNote.Description</div>
-@if (!CaseNote.IsComplete)
-{
 
-    <div class="col-4">
+<div class="col-4">
+    @if (!CaseNote.IsComplete)
+    {
         <button class="btn btn-dark" @onclick="() => MakeCaseNoteComplete()">Выполнить</button>
-    </div>
-}
+    }
+    else
+    {
+        <div>Выполнено: @CaseNote.CompleteDate.Value.ToString("G")</div>
+    }
+</div>
 @code {
     [Parameter]
     public CaseNote CaseNote { get; set; }
